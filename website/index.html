@@ -1,51 +1,167 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-    <meta charset="UTF-8">
+
+    <title>Nova AI</title>
+
+    <!-- Makes the website mobile friendly -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>ChatNova AI</title>
-
     <link rel="stylesheet" href="style.css">
+
 </head>
+
 
 <body>
 
-    <div class="chat-container">
 
-        <header class="chat-header">
-            <h1>🌙 ChatNova AI</h1>
-            <p>Your personal AI assistant</p>
-        </header>
+<div class="app">
 
 
-        <div id="chat-box" class="chat-box">
-            <div class="message bot-message">
-                Hello! I'm ChatNova AI 🤖<br>
-                How can I help you today?
+    <!-- Sidebar -->
+
+    <div class="sidebar">
+
+
+        <button class="new-chat" onclick="newChat()">
+            + New Chat
+        </button>
+
+
+        <div id="chat-list"></div>
+
+
+
+        <div class="profile">
+
+            <div class="profile-icon">
+                🤖
             </div>
+
+
+            <div>
+
+                <strong>Nova AI</strong>
+
+                <p>Personal Assistant</p>
+
+            </div>
+
+
         </div>
 
-
-        <div class="input-area">
-
-            <input 
-                id="user-input" 
-                type="text" 
-                placeholder="Ask Nova something..."
-                autocomplete="off"
-            >
-
-            <button id="send-button">
-                Send
-            </button>
-
-        </div>
 
     </div>
 
 
-    <script src="script.js"></script>
+
+
+
+    <!-- Main Area -->
+
+
+    <div class="chat-area">
+
+
+        <div class="header">
+
+             Nova AI
+
+        </div>
+
+
+
+
+        <div id="chat-box">
+
+
+            <div class="welcome">
+
+
+                <div class="nova-logo">
+                    
+                </div>
+
+
+                <h1>
+                    Hi, I'm Nova
+                </h1>
+
+
+                <p>
+                    Your personal AI chatbot assistant
+                </p>
+
+
+
+                <div class="suggestions">
+
+
+                    <button onclick="suggest('Help me with homework')">
+                        📚 Homework
+                    </button>
+
+
+                    <button onclick="suggest('Help me code')">
+                        💻 Coding
+                    </button>
+
+
+                    <button onclick="suggest('Give me ideas')">
+                        💡 Ideas
+                    </button>
+
+
+                    <button onclick="suggest('Ask me a question')">
+                        ❓ Questions
+                    </button>
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+
+
+
+
+        <div class="input-area">
+
+
+            <input 
+                id="user-input"
+                placeholder="Message Nova..."
+            >
+
+
+            <button class="send-button" onclick="sendMessage()">
+
+                ➤
+
+            </button>
+
+
+        </div>
+
+
+
+    </div>
+
+
+</div>
+
+
+
+
+<script src="script.js"></script>
+
 
 </body>
+
 </html>
