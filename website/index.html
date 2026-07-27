@@ -1,164 +1,51 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Nova AI</title>
+    <title>ChatNova AI</title>
 
     <link rel="stylesheet" href="style.css">
-
 </head>
-
 
 <body>
 
+    <div class="chat-container">
 
-<div class="app">
-
-
-    <!-- Sidebar -->
-
-    <div class="sidebar">
-
-
-        <button class="new-chat" onclick="newChat()">
-            + New Chat
-        </button>
+        <header class="chat-header">
+            <h1>🌙 ChatNova AI</h1>
+            <p>Your personal AI assistant</p>
+        </header>
 
 
-        <div id="chat-list"></div>
-
-
-
-        <div class="profile">
-
-            <div class="profile-icon">
-                🤖
+        <div id="chat-box" class="chat-box">
+            <div class="message bot-message">
+                Hello! I'm ChatNova AI 🤖<br>
+                How can I help you today?
             </div>
-
-
-            <div>
-
-                <strong>Nova AI</strong>
-
-                <p>Personal Assistant</p>
-
-            </div>
-
-
         </div>
-
-
-    </div>
-
-
-
-
-
-    <!-- Main Area -->
-
-
-    <div class="chat-area">
-
-
-        <div class="header">
-
-             Nova AI
-
-        </div>
-
-
-
-
-        <div id="chat-box">
-
-
-            <div class="welcome">
-
-
-                <div class="nova-logo">
-                    
-                </div>
-
-
-                <h1>
-                    Hi, I'm Nova
-                </h1>
-
-
-                <p>
-                    Your personal AI chatbot assistant
-                </p>
-
-
-
-                <div class="suggestions">
-
-
-                    <button onclick="suggest('Help me with homework')">
-                        📚 Homework
-                    </button>
-
-
-                    <button onclick="suggest('Help me code')">
-                        💻 Coding
-                    </button>
-
-
-                    <button onclick="suggest('Give me ideas')">
-                        💡 Ideas
-                    </button>
-
-
-                    <button onclick="suggest('Ask me a question')">
-                        ❓ Questions
-                    </button>
-
-
-                </div>
-
-
-            </div>
-
-
-        </div>
-
-
-
-
 
 
         <div class="input-area">
 
-
             <input 
-                id="user-input"
-                placeholder="Message Nova..."
+                id="user-input" 
+                type="text" 
+                placeholder="Ask Nova something..."
+                autocomplete="off"
             >
 
-
-            <button class="send-button" onclick="sendMessage()">
-
-                ➤
-
+            <button id="send-button">
+                Send
             </button>
 
-
         </div>
-
-
 
     </div>
 
 
-</div>
-
-
-
-
-<script src="script.js"></script>
-
+    <script src="script.js"></script>
 
 </body>
-
 </html>
