@@ -79,17 +79,15 @@ Be clear, helpful, and friendly.
 
 
 
-        for line in response.iter_lines():
+    for line in response.iter_lines():
 
+        if line:
 
-            if line:
+            line = line.decode("utf-8")
 
+            print("STREAM:", line)
 
-                line = line.decode("utf-8")
-
-
-
-                if line.startswith("data: "):
+            if line.startswith("data: "):
 
 
                     data = line[6:]
