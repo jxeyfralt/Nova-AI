@@ -1,7 +1,8 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, Response
 from flask_cors import CORS
 import requests
 import os
+import json
 
 app = Flask(__name__)
 
@@ -13,27 +14,29 @@ def chat():
 
     user_message = request.json["message"]
 
-    # Get API key from Render environment
     API_KEY = os.environ.get("OPENROUTER_API_KEY")
 
     print("KEY FOUND:", API_KEY is not None)
-    print("KEY START:", API_KEY[:10] if API_KEY else "NONE")
 
-    response = requests.post(
-        "https://openrouter.ai/api/v1/chat/completions",
+    def generate():
 
-        headers={
-            "Authorization": f"Bearer {API_KEY}",
-            "Content-Type": "application/json"
-        },
+        response = requests.post(
+            "https://openrouter.ai/api/v1/chat/completions",
 
-        json={
-            "model": "openrouter/free",
+            headers={
+                "Authorization": f"Bearer {API_KEY}",
+                "Content-Type": "application/json"
+            },
 
-            "messages": [
-                {
-                    "role": "system",
-                    "content": """
+            json={
+                "model": "openrouter/free",
+
+                "stream": True,
+
+                "messages": [
+                    {
+                        "role": "system",
+                        "content": """
 You are Nova, a friendly personal AI assistant.
 
 Help users with:
@@ -44,28 +47,47 @@ Help users with:
 
 Be clear, helpful, and friendly.
 """
-                },
-                {
-                    "role": "user",
-                    "content": user_message
-                }
-            ]
-        }
+                    },
+                    {
+                        "role": "user",
+                        "content": user_message
+                    }
+                ]
+            },
+
+            stream=True
+        )
+
+
+        for line in response.iter_lines():
+
+            if line:
+
+                line = line.decode("utf-8")
+
+                if line.startswith("data: "):
+
+                    data = line.replace("data: ", "")
+
+                    if data == "[DONE]":
+                        break
+
+                    try:
+                        chunk = json.loads(data)
+
+                        text = chunk["choices"][0]["delta"].get("content", "")
+
+                        if text:
+                            yield text
+
+                    except Exception:
+                        pass
+
+
+    return Response(
+        generate(),
+        mimetype="text/plain"
     )
-
-    data = response.json()
-
-    print("OpenRouter response:")
-    print(data)
-
-    if "choices" not in data:
-        return jsonify({
-            "reply": "Nova API error. Check the Flask terminal."
-        })
-
-    return jsonify({
-        "reply": data["choices"][0]["message"]["content"]
-    })
 
 
 if __name__ == "__main__":

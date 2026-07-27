@@ -42,15 +42,11 @@ function renderChats() {
         `;
 
 
-        // Click chat
         item.querySelector(".chat-title").onclick = () => {
-
             openChat(index);
-
         };
 
 
-        // Delete chat
         item.querySelector(".delete").onclick = (event) => {
 
             event.stopPropagation();
@@ -104,12 +100,10 @@ function newChat() {
 
 
 
-// Open old chat
+// Open chat
 function openChat(index) {
 
-
     currentChat = index;
-
 
     saveChats();
 
@@ -124,14 +118,11 @@ function openChat(index) {
 // Delete chat
 function deleteChat(index) {
 
-
     chats.splice(index, 1);
 
 
     if (currentChat === index) {
-
         currentChat = null;
-
     }
 
 
@@ -145,8 +136,7 @@ function deleteChat(index) {
 
 
 
-
-// Show messages
+// Display messages
 function displayChat() {
 
 
@@ -158,11 +148,10 @@ function displayChat() {
 
     if (currentChat === null) {
 
+
         box.innerHTML = `
 
         <div class="welcome">
-
-            <h1></h1>
 
             <h2>Hi, I'm Nova</h2>
 
@@ -202,8 +191,7 @@ function displayChat() {
 
 
 
-
-// Send message
+// Send message with streaming
 async function sendMessage() {
 
 
@@ -213,12 +201,10 @@ async function sendMessage() {
     const message = input.value.trim();
 
 
-
     if (message === "") return;
 
 
 
-    // Make chat if none exists
     if (currentChat === null) {
 
 
@@ -234,7 +220,6 @@ async function sendMessage() {
         currentChat = chats.length - 1;
 
     }
-
 
 
 
@@ -268,8 +253,8 @@ async function sendMessage() {
 
 
 
+    // Loading message
 
-    // Typing dots
     const box = document.getElementById("chat-box");
 
 
@@ -284,11 +269,7 @@ async function sendMessage() {
 
         <div class="typing">
 
-            <div class="dot"></div>
-
-            <div class="dot"></div>
-
-            <div class="dot"></div>
+            Nova is thinking...
 
         </div>
 
@@ -332,7 +313,11 @@ async function sendMessage() {
 
 
 
-        const data = await response.json();
+        if (!response.ok) {
+
+            throw new Error("Server error");
+
+        }
 
 
 
@@ -340,31 +325,67 @@ async function sendMessage() {
 
 
 
-        chats[currentChat].messages.push({
+        const botMessage = {
 
             role:"bot",
 
-            text:data.reply
+            text:""
 
-        });
+        };
 
 
 
-        saveChats();
+        chats[currentChat].messages.push(botMessage);
 
-        renderChats();
+
 
         displayChat();
+
+
+
+        const reader = response.body.getReader();
+
+        const decoder = new TextDecoder();
+
+
+
+        while(true){
+
+
+            const {done, value} = await reader.read();
+
+
+            if(done) break;
+
+
+
+            const chunk = decoder.decode(value);
+
+
+
+            botMessage.text += chunk;
+
+
+
+            saveChats();
+
+
+            displayChat();
+
+
+        }
 
 
 
     }
 
 
+
     catch(error){
 
 
         typing.remove();
+
 
 
         chats[currentChat].messages.push({
@@ -376,14 +397,19 @@ async function sendMessage() {
         });
 
 
+
         saveChats();
 
         displayChat();
 
 
+        console.log(error);
+
     }
 
+
 }
+
 
 
 
@@ -405,10 +431,15 @@ document
 
 
 
-// Load sidebar
-renderChats();
+
+// Suggestions
 function suggest(text){
 
     document.getElementById("user-input").value = text;
 
 }
+
+
+
+// Load chats
+renderChats();
