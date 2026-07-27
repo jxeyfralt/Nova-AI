@@ -19,8 +19,8 @@ def chat():
 
     user_message = request.json["message"]
 
-print("KEY FOUND:", API_KEY is not None)
-print("KEY START:", API_KEY[:10] if API_KEY else "NONE")
+    print("KEY FOUND:", API_KEY is not None)
+    print("KEY START:", API_KEY[:10] if API_KEY else "NONE")
 
     response = requests.post(
 
