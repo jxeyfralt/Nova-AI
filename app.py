@@ -1,157 +1,191 @@
-from flask import Flask, request, Response
+from flask import Flask, request, jsonify
 from flask_cors import CORS
-import requests
+from openai import OpenAI
 import os
-import json
+import traceback
+
 
 app = Flask(__name__)
 
 CORS(app)
 
 
+# ==============================
+# Nova Configuration
+# ==============================
+
+MODEL = "openrouter/free"
+
+SYSTEM_PROMPT = """
+You are Nova, a friendly personal AI assistant.
+
+Your job is to help users with:
+- questions
+- coding
+- schoolwork
+- brainstorming ideas
+- explanations
+- everyday tasks
+
+Personality:
+- Friendly
+- Helpful
+- Clear
+- Encouraging
+
+Rules:
+- Explain things step-by-step when needed.
+- Use examples when helpful.
+- Keep answers easy to understand.
+"""
+
+
+# ==============================
+# OpenRouter Client
+# ==============================
+
+API_KEY = os.environ.get("OPENROUTER_API_KEY")
+
+
+if API_KEY:
+
+    client = OpenAI(
+        api_key=API_KEY,
+        base_url="https://openrouter.ai/api/v1"
+    )
+
+else:
+
+    client = None
+
+    print("[ERROR] OPENROUTER_API_KEY not found")
+
+
+
+# ==============================
+# Chat Route
+# ==============================
+
 @app.route("/chat", methods=["POST"])
 def chat():
 
-    user_message = request.json["message"]
+    try:
 
-    API_KEY = os.environ.get("OPENROUTER_API_KEY")
+        if not client:
+
+            return jsonify({
+                "reply": "Nova is not configured correctly. Missing API key."
+            })
 
 
-    def generate():
+        data = request.get_json()
 
-        response = requests.post(
 
-        
+        user_message = data.get("message")
 
-            "https://openrouter.ai/api/v1/chat/completions",
-        print("Status:", response.status_code, flush=True)
 
-        headers={
-            "Authorization": f"Bearer {API_KEY}",
-            "Content-Type": "application/json"
-        },
+        if not user_message:
 
-        json={
+            return jsonify({
+                "reply": "Please enter a message."
+            })
 
-            "model": "openrouter/free",
 
-            "stream": True,
 
-            "messages": [
+        print("[INFO] User message received:", user_message)
+
+
+
+        response = client.chat.completions.create(
+
+            model=MODEL,
+
+            messages=[
+
                 {
                     "role": "system",
-                    "content": """
-You are Nova, a friendly personal AI assistant.
-
-Help users with:
-- questions
-- coding
-- school
-- ideas
-
-Be clear, helpful, and friendly.
-"""
+                    "content": SYSTEM_PROMPT
                 },
+
                 {
                     "role": "user",
                     "content": user_message
                 }
+
             ]
 
-        },
-
-        stream=True
-
-    )
-
-    print("Status:", response.status_code, flush=True)
-
-    for line in response.iter_lines():
-
-        if line:
-
-            line = line.decode("utf-8")
-
-            print("STREAM:", repr(line), flush=True)
-
-            print("STREAM:", line, flush=True)
-
-            if line.startswith("data: "):
-
-                data = line[6:]
-
-                if data == "[DONE]":
-                    break
-
-                try:
-
-                    chunk = json.loads(data)
-
-                    text = chunk["choices"][0]["delta"].get("content", "")
-
-                    if text:
-                        yield text
-
-                except Exception as e:
-                    print("ERROR:", e, flush=True)
+        )
 
 
-        if line:
-
-            line = line.decode("utf-8")
-
-            print("STREAM:", line)
-
-            if line.startswith("data: "):
+        reply = response.choices[0].message.content
 
 
-                    data = line[6:]
+        print("[INFO] Nova response generated")
+
+
+        return jsonify({
+
+            "reply": reply
+
+        })
 
 
 
-                    if data == "[DONE]":
-
-                        break
+    except Exception as e:
 
 
+        print("[ERROR] Chat failed")
 
-                    try:
-
-                        chunk = json.loads(data)
-
-
-                        text = chunk["choices"][0]["delta"].get(
-                            "content",
-                            ""
-                        )
+        traceback.print_exc()
 
 
-                        if text:
+        return jsonify({
 
-                            yield text
+            "reply": "Sorry, Nova is having trouble connecting right now."
 
-
-                    except Exception:
-
-                        pass
+        })
 
 
 
 
-    return Response(
-        generate(),
-        mimetype="text/plain"
-    )
-
+# ==============================
+# Test Route
+# ==============================
 
 @app.route("/test")
 def test():
-    return "NOVA STREAM VERSION WORKING"
+
+    return "NOVA BACKEND V2 WORKING"
+
+
+
+# ==============================
+# Health Check
+# ==============================
+
+@app.route("/")
+def home():
+
+    return {
+
+        "status": "online",
+
+        "message": "Nova backend is running"
+
+    }
+
+
+
+# ==============================
+# Start Server
+# ==============================
 
 if __name__ == "__main__":
 
     app.run(
+
         host="0.0.0.0",
-        port=int(os.environ.get("PORT",5000))
+
+        port=int(os.environ.get("PORT", 5000))
+
     )
-    
