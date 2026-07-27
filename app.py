@@ -16,26 +16,35 @@ def chat():
 
     API_KEY = os.environ.get("OPENROUTER_API_KEY")
 
-    print("KEY FOUND:", API_KEY is not None)
 
     def generate():
 
         response = requests.post(
+
             "https://openrouter.ai/api/v1/chat/completions",
 
             headers={
+
                 "Authorization": f"Bearer {API_KEY}",
+
                 "Content-Type": "application/json"
+
             },
 
+
             json={
+
                 "model": "openrouter/free",
 
                 "stream": True,
 
+
                 "messages": [
+
                     {
+
                         "role": "system",
+
                         "content": """
 You are Nova, a friendly personal AI assistant.
 
@@ -47,41 +56,73 @@ Help users with:
 
 Be clear, helpful, and friendly.
 """
+
                     },
+
+
                     {
+
                         "role": "user",
+
                         "content": user_message
+
                     }
+
                 ]
+
             },
 
+
             stream=True
+
         )
+
 
 
         for line in response.iter_lines():
 
+
             if line:
+
 
                 line = line.decode("utf-8")
 
+
+
                 if line.startswith("data: "):
 
-                    data = line.replace("data: ", "")
+
+                    data = line[6:]
+
+
 
                     if data == "[DONE]":
+
                         break
 
+
+
                     try:
+
                         chunk = json.loads(data)
 
-                        text = chunk["choices"][0]["delta"].get("content", "")
+
+                        text = chunk["choices"][0]["delta"].get(
+                            "content",
+                            ""
+                        )
+
 
                         if text:
+
                             yield text
 
+
                     except Exception:
+
                         pass
+
+
 
 
     return Response(
@@ -90,8 +131,10 @@ Be clear, helpful, and friendly.
     )
 
 
+
 if __name__ == "__main__":
+
     app.run(
         host="0.0.0.0",
-        port=int(os.environ.get("PORT", 5000))
+        port=int(os.environ.get("PORT",5000))
     )

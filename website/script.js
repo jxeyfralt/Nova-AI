@@ -3,53 +3,58 @@ let chats = JSON.parse(localStorage.getItem("chats")) || [];
 let currentChat = null;
 
 
-// Save chats
-function saveChats() {
-    localStorage.setItem("chats", JSON.stringify(chats));
+
+function saveChats(){
+
+    localStorage.setItem(
+        "chats",
+        JSON.stringify(chats)
+    );
+
 }
 
 
-// Create sidebar list
-function renderChats() {
 
-    const list = document.getElementById("chat-list");
+function renderChats(){
 
-    list.innerHTML = "";
+    const list=document.getElementById("chat-list");
 
-
-    chats.forEach((chat, index) => {
-
-        const item = document.createElement("div");
-
-        item.className = "chat-item";
+    list.innerHTML="";
 
 
-        if (index === currentChat) {
-            item.classList.add("active");
-        }
+    chats.forEach((chat,index)=>{
 
 
-        item.innerHTML = `
+        const item=document.createElement("div");
 
-            <span class="chat-title">
-                ${chat.title}
-            </span>
+        item.className="chat-item";
 
-            <button class="delete">
-                ✕
-            </button>
+
+        item.innerHTML=`
+
+        <span class="chat-title">
+            ${chat.title}
+        </span>
+
+        <button class="delete">
+            ✕
+        </button>
 
         `;
 
 
-        item.querySelector(".chat-title").onclick = () => {
+
+        item.querySelector(".chat-title").onclick=()=>{
+
             openChat(index);
+
         };
 
 
-        item.querySelector(".delete").onclick = (event) => {
 
-            event.stopPropagation();
+        item.querySelector(".delete").onclick=(e)=>{
+
+            e.stopPropagation();
 
             deleteChat(index);
 
@@ -58,36 +63,38 @@ function renderChats() {
 
         list.appendChild(item);
 
+
     });
+
 
 }
 
 
 
-// New chat
-function newChat() {
 
 
-    const chat = {
+function newChat(){
 
-        title: "New Chat",
+    chats.push({
 
-        messages: [
+        title:"New Chat",
+
+        messages:[
 
             {
-                role: "bot",
-                text: "Hi, I'm Nova, your personal chatbot! How can I help you today?"
+
+                role:"bot",
+
+                text:"Hi, I'm Nova! How can I help you today?"
+
             }
 
         ]
 
-    };
+    });
 
 
-    chats.push(chat);
-
-
-    currentChat = chats.length - 1;
+    currentChat=chats.length-1;
 
 
     saveChats();
@@ -100,10 +107,28 @@ function newChat() {
 
 
 
-// Open chat
-function openChat(index) {
 
-    currentChat = index;
+
+
+
+function openChat(index){
+
+    currentChat=index;
+
+    displayChat();
+
+}
+
+
+
+
+
+
+function deleteChat(index){
+
+    chats.splice(index,1);
+
+    currentChat=null;
 
     saveChats();
 
@@ -115,47 +140,29 @@ function openChat(index) {
 
 
 
-// Delete chat
-function deleteChat(index) {
-
-    chats.splice(index, 1);
-
-
-    if (currentChat === index) {
-        currentChat = null;
-    }
-
-
-    saveChats();
-
-    renderChats();
-
-    displayChat();
-
-}
 
 
 
-// Display messages
-function displayChat() {
+
+function displayChat(){
 
 
-    const box = document.getElementById("chat-box");
+    const box=document.getElementById("chat-box");
 
 
-    box.innerHTML = "";
+    box.innerHTML="";
 
 
-    if (currentChat === null) {
 
+    if(currentChat===null){
 
-        box.innerHTML = `
+        box.innerHTML=`
 
         <div class="welcome">
 
-            <h2>Hi, I'm Nova</h2>
+        <h2>Hi, I'm Nova</h2>
 
-            <p>Your personal chatbot assistant</p>
+        <p>Your personal chatbot assistant</p>
 
         </div>
 
@@ -167,14 +174,16 @@ function displayChat() {
 
 
 
-    chats[currentChat].messages.forEach(msg => {
 
 
-        box.innerHTML += `
+    chats[currentChat].messages.forEach(msg=>{
+
+
+        box.innerHTML+=`
 
         <div class="message ${msg.role}">
 
-            ${msg.text}
+        ${msg.text}
 
         </div>
 
@@ -184,42 +193,52 @@ function displayChat() {
     });
 
 
-    box.scrollTop = box.scrollHeight;
+
+    box.scrollTop=box.scrollHeight;
+
 
 }
 
 
 
 
-// Send message with streaming
-async function sendMessage() {
-
-
-    const input = document.getElementById("user-input");
-
-
-    const message = input.value.trim();
-
-
-    if (message === "") return;
 
 
 
-    if (currentChat === null) {
+
+
+async function sendMessage(){
+
+
+    const input=document.getElementById("user-input");
+
+
+    const message=input.value.trim();
+
+
+    if(!message)return;
+
+
+
+
+    if(currentChat===null){
 
 
         chats.push({
 
-            title: message.substring(0,20),
+            title:message.substring(0,20),
 
-            messages: []
+            messages:[]
 
         });
 
 
-        currentChat = chats.length - 1;
+        currentChat=chats.length-1;
+
 
     }
+
+
 
 
 
@@ -233,89 +252,86 @@ async function sendMessage() {
 
 
 
-    if (chats[currentChat].title === "New Chat") {
+    input.value="";
 
-        chats[currentChat].title = message.substring(0,20);
-
-    }
-
-
-
-    input.value = "";
-
-
-    saveChats();
-
-    renderChats();
 
     displayChat();
 
 
 
 
-    // Loading message
-
-    const box = document.getElementById("chat-box");
 
 
-    const typing = document.createElement("div");
 
-    typing.className = "message bot";
-
-    typing.id = "typing";
+    const box=document.getElementById("chat-box");
 
 
-    typing.innerHTML = `
 
-        <div class="typing">
+    const typing=document.createElement("div");
 
-            Nova is thinking...
 
-        </div>
+    typing.className="message bot";
+
+
+    typing.id="typing";
+
+
+
+    typing.innerHTML=`
+
+    <div class="typing">
+
+        <div class="dot"></div>
+
+        <div class="dot"></div>
+
+        <div class="dot"></div>
+
+    </div>
 
     `;
+
 
 
     box.appendChild(typing);
 
 
-    box.scrollTop = box.scrollHeight;
 
 
 
-
-    try {
-
-
-        const response = await fetch(
-
-            "https://nova-ai-o27u.onrender.com/chat",
-
-            {
-
-                method:"POST",
-
-                headers:{
-
-                    "Content-Type":"application/json"
-
-                },
-
-                body:JSON.stringify({
-
-                    message:message
-
-                })
-
-            }
-
-        );
+    try{
 
 
+        const response=await fetch(
 
-        if (!response.ok) {
+        "https://nova-ai-o27u.onrender.com/chat",
 
-            throw new Error("Server error");
+        {
+
+
+            method:"POST",
+
+
+            headers:{
+
+                "Content-Type":"application/json"
+
+            },
+
+
+            body:JSON.stringify({
+
+                message:message
+
+            })
+
+
+        });
+
+
+        if(!response.ok){
+
+            throw new Error();
 
         }
 
@@ -325,7 +341,8 @@ async function sendMessage() {
 
 
 
-        const botMessage = {
+
+        let botMessage={
 
             role:"bot",
 
@@ -339,41 +356,39 @@ async function sendMessage() {
 
 
 
-        displayChat();
 
 
+        const reader=response.body.getReader();
 
-        const reader = response.body.getReader();
 
-        const decoder = new TextDecoder();
+        const decoder=new TextDecoder();
+
+
 
 
 
         while(true){
 
 
-            const {done, value} = await reader.read();
+            const {done,value}=await reader.read();
 
 
-            if(done) break;
-
-
-
-            const chunk = decoder.decode(value);
+            if(done)break;
 
 
 
-            botMessage.text += chunk;
+            botMessage.text+=decoder.decode(value);
 
-
-
-            saveChats();
 
 
             displayChat();
 
 
         }
+
+
+
+        saveChats();
 
 
 
@@ -398,12 +413,11 @@ async function sendMessage() {
 
 
 
-        saveChats();
-
         displayChat();
 
 
         console.log(error);
+
 
     }
 
@@ -414,32 +428,35 @@ async function sendMessage() {
 
 
 
-// Enter key
+
+
+
 document
 .getElementById("user-input")
-.addEventListener("keydown", function(event){
+.addEventListener(
+"keydown",
+function(event){
 
-
-    if(event.key === "Enter"){
+    if(event.key==="Enter"){
 
         sendMessage();
 
     }
-
 
 });
 
 
 
 
-// Suggestions
+
 function suggest(text){
 
-    document.getElementById("user-input").value = text;
+    document.getElementById("user-input").value=text;
 
 }
 
 
 
-// Load chats
+
+
 renderChats();
