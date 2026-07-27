@@ -1,0 +1,450 @@
+body {
+    margin:0;
+    height:100vh;
+    font-family:Arial, sans-serif;
+    background:white;
+}
+
+
+.app {
+    display:flex;
+    height:100vh;
+}
+
+
+/* SIDEBAR */
+
+.sidebar {
+
+    width:260px;
+    background:#f7f7f8;
+    border-right:1px solid #ddd;
+
+    padding:15px;
+
+    display:flex;
+    flex-direction:column;
+}
+
+
+.new-chat {
+
+    width:100%;
+    padding:12px;
+
+    border-radius:10px;
+
+    background:#111;
+    color:white;
+
+    border:none;
+
+    cursor:pointer;
+
+    font-size:16px;
+
+}
+
+
+.new-chat:hover {
+
+    background:#333;
+
+}
+
+
+
+#chat-list {
+
+    margin-top:20px;
+
+    flex:1;
+
+}
+
+
+
+.chat-item {
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:10px;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+}
+
+
+
+.chat-item:hover {
+
+    background:#e5e5e5;
+
+}
+
+
+
+.chat-item.active {
+
+    background:#dcdcdc;
+
+}
+
+
+
+.chat-title {
+
+    flex:1;
+
+    cursor:pointer;
+
+}
+
+
+
+.delete {
+
+    background:none;
+
+    border:none;
+
+    color:#777;
+
+    cursor:pointer;
+
+    width:25px;
+
+    height:25px;
+
+    margin:0;
+
+    padding:0;
+
+}
+
+
+
+.delete:hover {
+
+    color:red;
+
+}
+
+
+
+
+
+/* PROFILE */
+
+.profile {
+
+    border-top:1px solid #ddd;
+
+    padding-top:15px;
+
+    display:flex;
+
+    gap:10px;
+
+    align-items:center;
+
+}
+
+
+
+.profile-icon {
+
+    font-size:30px;
+
+}
+
+
+.profile p {
+
+    margin:3px 0;
+
+    color:#777;
+
+    font-size:13px;
+
+}
+
+
+
+
+/* CHAT AREA */
+
+
+.chat-area {
+
+    flex:1;
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+
+
+.header {
+
+    padding:20px;
+
+    font-size:24px;
+
+    font-weight:bold;
+
+    border-bottom:1px solid #ddd;
+
+}
+
+
+
+#chat-box {
+
+    flex:1;
+
+    padding:20px;
+
+    overflow-y:auto;
+
+}
+
+
+
+.message {
+
+    max-width:75%;
+
+    padding:14px;
+
+    margin:10px 0;
+
+    border-radius:15px;
+
+}
+
+
+
+.user {
+
+    background:#e9e9e9;
+
+    margin-left:auto;
+
+}
+
+
+
+.bot {
+
+    background:white;
+
+    border:1px solid #ddd;
+
+}
+
+
+
+/* INPUT */
+
+
+.input-area {
+
+    display:flex;
+
+    padding:15px;
+
+    border-top:1px solid #ddd;
+
+}
+
+
+
+input {
+
+    flex:1;
+
+    padding:15px;
+
+    border-radius:25px;
+
+    border:1px solid #ccc;
+
+}
+
+
+
+.send-button {
+
+    margin-left:10px;
+
+    width:50px;
+
+    height:50px;
+
+    border-radius:50%;
+
+    background:#111;
+
+    color:white;
+
+    border:none;
+
+    cursor:pointer;
+
+}
+
+
+
+/* DOTS */
+
+
+.typing {
+
+    display:flex;
+
+    gap:5px;
+
+}
+
+
+.dot {
+
+    width:8px;
+
+    height:8px;
+
+    background:#555;
+
+    border-radius:50%;
+
+    animation:bounce 1s infinite;
+
+}
+
+
+.dot:nth-child(2){
+
+    animation-delay:.2s;
+
+}
+
+
+.dot:nth-child(3){
+
+    animation-delay:.4s;
+
+}
+
+
+@keyframes bounce {
+
+    40% {
+
+        transform:translateY(-6px);
+
+    }
+
+}
+/* Welcome Page */
+
+
+.welcome {
+
+    text-align:center;
+
+    margin-top:120px;
+
+    color:#333;
+
+}
+
+
+
+.nova-logo {
+
+    font-size:70px;
+
+    margin-bottom:20px;
+
+}
+
+
+
+.welcome h1 {
+
+    font-size:36px;
+
+    margin-bottom:10px;
+
+}
+
+
+
+.welcome p {
+
+    color:#666;
+
+    font-size:18px;
+
+}
+
+
+
+.suggestions {
+
+    margin-top:35px;
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:15px;
+
+    flex-wrap:wrap;
+
+}
+
+
+
+.suggestions button {
+
+
+    width:auto;
+
+    height:auto;
+
+    padding:12px 18px;
+
+    border-radius:20px;
+
+    background:white;
+
+    color:#111;
+
+    border:1px solid #ddd;
+
+    cursor:pointer;
+
+    font-size:15px;
+
+
+}
+
+
+
+.suggestions button:hover {
+
+    background:#eee;
+
+    transform:none;
+
+}
