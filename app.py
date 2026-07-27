@@ -21,31 +21,26 @@ def chat():
 
         response = requests.post(
 
+        
+
             "https://openrouter.ai/api/v1/chat/completions",
+        print("Status:", response.status_code, flush=True)
 
-            headers={
+        headers={
+            "Authorization": f"Bearer {API_KEY}",
+            "Content-Type": "application/json"
+        },
 
-                "Authorization": f"Bearer {API_KEY}",
+        json={
 
-                "Content-Type": "application/json"
+            "model": "openrouter/free",
 
-            },
+            "stream": True,
 
-
-            json={
-
-                "model": "openrouter/free",
-
-                "stream": True,
-
-
-                "messages": [
-
-                    {
-
-                        "role": "system",
-
-                        "content": """
+            "messages": [
+                {
+                    "role": "system",
+                    "content": """
 You are Nova, a friendly personal AI assistant.
 
 Help users with:
@@ -56,30 +51,50 @@ Help users with:
 
 Be clear, helpful, and friendly.
 """
+                },
+                {
+                    "role": "user",
+                    "content": user_message
+                }
+            ]
 
-                    },
+        },
 
+        stream=True
 
-                    {
+    )
 
-                        "role": "user",
-
-                        "content": user_message
-
-                    }
-
-                ]
-
-            },
-
-
-            stream=True
-
-        )
-
-
+    print("Status:", response.status_code, flush=True)
 
     for line in response.iter_lines():
+
+        if line:
+
+            line = line.decode("utf-8")
+
+            print("STREAM:", repr(line), flush=True)
+
+            print("STREAM:", line, flush=True)
+
+            if line.startswith("data: "):
+
+                data = line[6:]
+
+                if data == "[DONE]":
+                    break
+
+                try:
+
+                    chunk = json.loads(data)
+
+                    text = chunk["choices"][0]["delta"].get("content", "")
+
+                    if text:
+                        yield text
+
+                except Exception as e:
+                    print("ERROR:", e, flush=True)
+
 
         if line:
 
