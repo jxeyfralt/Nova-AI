@@ -197,23 +197,20 @@ async function sendMessage() {
             }
         );
 
-        const data = await response.json();
+const data = await response.json();
 
-        typing.remove();
+typing.remove();
 
-        chats[currentChat].messages.push({
+chats[currentChat].messages.push({
+    role: "bot",
+    text: data.reply
+});
 
-            role: "bot",
+saveChats();
 
-            text: data.reply
+renderChats();
 
-        });
-
-        saveChats();
-
-        renderChats();
-
-        displayChat();
+displayChat();
 
     }
 
