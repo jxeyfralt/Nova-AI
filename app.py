@@ -14,7 +14,7 @@ CORS(app)
 # Nova Configuration
 # ==============================
 
-MODEL = "openrouter/free"
+MODEL = "meta-llama/llama-3.1-8b-instruct:free"
 
 SYSTEM_PROMPT = """
 You are Nova, a friendly personal AI assistant.
@@ -91,6 +91,15 @@ def chat():
 
         data = request.get_json()
         user_message = data.get("message")
+        if any(word in user_message.lower() for word in [
+            "who created you",
+            "who made you",
+            "who is your developer"
+        ]):
+            return Response(
+                "I was created by Joey Cao, who built and developed Nova AI.",
+                mimetype="text/plain"
+            )
 
         if not user_message:
             return jsonify({
@@ -151,11 +160,11 @@ def chat():
                 "X-Accel-Buffering": "no",
                 "Connection": "keep-alive"
             }   
-    )
+        )
 
     except Exception as e:
 
-        print("[ERROR] Chat failed")
+        print("[ERROR] Chat failed",e)
 
         traceback.print_exc()
 

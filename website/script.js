@@ -161,7 +161,10 @@ async function sendMessage() {
 
 
         if (!response.ok) {
-            throw new Error("Request failed");
+            const errorText = await response.text();
+
+            throw new Error(errorText);
+
         }
 
 
@@ -208,7 +211,7 @@ async function sendMessage() {
 
                 box.scrollTop = box.scrollHeight;
 
-                await new Promise(resolve => setTimeout(resolve, 2));
+                await new Promise(resolve => setTimeout(resolve, 15));
             }
         }
 
@@ -223,7 +226,7 @@ async function sendMessage() {
 
         chats[currentChat].messages.push({
             role: "bot",
-            text: "Sorry, Nova couldn't connect."
+            text: "Nova is temporarily unavailable. Please try again soon."
         });
 
         saveChats();
