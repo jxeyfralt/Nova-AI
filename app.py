@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, Response
 from flask_cors import CORS
 from openai import OpenAI
 import os
@@ -65,85 +65,86 @@ else:
 # ==============================
 # Chat Route
 # ==============================
-
 @app.route("/chat", methods=["POST"])
 def chat():
 
     try:
 
         if not client:
-
             return jsonify({
                 "reply": "Nova is not configured correctly. Missing API key."
             })
 
-
         data = request.get_json()
-
-
         user_message = data.get("message")
 
-
         if not user_message:
-
             return jsonify({
                 "reply": "Please enter a message."
             })
 
-
-
         print("[INFO] User message received:", user_message)
-
-
 
         response = client.chat.completions.create(
 
             model=MODEL,
 
             messages=[
-
                 {
                     "role": "system",
                     "content": SYSTEM_PROMPT
                 },
-
                 {
                     "role": "user",
                     "content": user_message
                 }
+            ],
 
-            ]
+            stream=True
 
         )
 
+        def generate():
 
-        reply = response.choices[0].message.content
+            print("[INFO] Streaming started")
 
+            for chunk in response:
 
-        print("[INFO] Nova response generated")
+                try:
 
+                    if (
+                        chunk.choices
+                        and chunk.choices[0].delta
+                        and chunk.choices[0].delta.content
+                    ):
 
-        return jsonify({
+                        text = chunk.choices[0].delta.content
 
-            "reply": reply
+                        yield text
 
-        })
+                except Exception as e:
 
+                    print("[STREAM ERROR]", e)
 
+            print("[INFO] Streaming finished")
+
+        return Response(
+            generate(),
+            mimetype="text/plain"
+        )
 
     except Exception as e:
-
 
         print("[ERROR] Chat failed")
 
         traceback.print_exc()
 
-
         return jsonify({
-
             "reply": "Sorry, Nova is having trouble connecting right now."
-
         })
+
+
+
 
 
 

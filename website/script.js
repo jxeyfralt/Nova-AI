@@ -161,14 +161,28 @@ async function sendMessage() {
             throw new Error("Request failed");
         }
 
-        const data = await response.json();
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
 
         typing.remove();
 
-        chats[currentChat].messages.push({
+        let botMessage = {
             role: "bot",
-            text: data.reply
-        });
+            text: ""
+        };
+
+        chats[currentChat].messages.push(botMessage);
+
+        while (true) {
+
+            const { done, value } = await reader.read();
+
+            if (done) break;
+
+            botMessage.text += decoder.decode(value, { stream: true });
+
+            displayChat();
+        }
 
         saveChats();
         renderChats();
@@ -184,6 +198,7 @@ async function sendMessage() {
         });
 
         saveChats();
+        renderChats();
         displayChat();
 
         console.error(error);
