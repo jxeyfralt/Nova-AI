@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, Response
+from flask import Flask, request, jsonify, Response, stream_with_context
 from flask_cors import CORS
 from openai import OpenAI
 import os
@@ -129,9 +129,14 @@ def chat():
             print("[INFO] Streaming finished")
 
         return Response(
-            generate(),
-            mimetype="text/plain"
-        )
+            stream_with_context(generate()),
+            mimetype="text/plain",
+            headers={
+                "Cache-Control": "no-cache",
+                "X-Accel-Buffering": "no"
+                "Connection": "keep-alive"
+            }   
+    )
 
     except Exception as e:
 
