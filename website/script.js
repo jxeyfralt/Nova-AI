@@ -186,27 +186,30 @@ async function sendMessage() {
         chats[currentChat].messages.push(botMessage);
 
 
+        let fullResponse = "";
+
         while (true) {
+
             const { done, value } = await reader.read();
+
             if (done) break;
+
             const chunk = decoder.decode(value, {
                 stream: true
             });
 
-            let i = 0;
+            fullResponse += chunk;
 
-            while (i < chunk.length) {
-                botMessage.text += chunk.slice(i, i + 8);
+            while (botMessage.text.length < fullResponse.length) {
+
+                botMessage.text += fullResponse[botMessage.text.length];
+
                 botDiv.textContent = botMessage.text;
 
-                i += 3;
+                box.scrollTop = box.scrollHeight;
 
                 await new Promise(resolve => setTimeout(resolve, 2));
             }
-    
-
-
-            box.scrollTop = box.scrollHeight;
         }
 
 
