@@ -1,44 +1,52 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
 
-    <title>Nova AI</title>
+    <meta charset="UTF-8">
 
-    <!-- Makes the website mobile friendly -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Nova AI</title>
 
     <link rel="stylesheet" href="style.css">
 
 </head>
 
-
 <body>
-
 
 <div class="app">
 
-    <div class="overlay" onclick="toggleSidebar()"></div>
-    <!-- Sidebar -->
+    <!-- Dark overlay (phones only) -->
+    <div
+        class="overlay"
+        onclick="toggleSidebar()"
+    ></div>
 
-    <div class="sidebar">
 
+    <!-- ==========================
+         SIDEBAR
+    =========================== -->
 
-        <button class="new-chat" onclick="newChat()">
+    <aside class="sidebar">
+
+        <button
+            class="new-chat"
+            onclick="newChat()"
+        >
             + New Chat
         </button>
 
-
         <div id="chat-list"></div>
-
-
 
         <div class="profile">
 
             <div class="profile-icon">
                 🤖
             </div>
-
 
             <div>
 
@@ -48,125 +56,126 @@
 
             </div>
 
-
         </div>
 
-
-    </div>
-
+    </aside>
 
 
 
+    <!-- ==========================
+         CHAT AREA
+    =========================== -->
 
-    <!-- Main Area -->
-
-
-    <div class="chat-area">
-
-
-    <div class="header">
-
-        <button class="menu-button" onclick="toggleSidebar()">
-            ☰
-        </button>
-
-        <span>
-            Nova AI
-        </span>
-
-    </div>
+    <main class="chat-area">
 
 
+        <!-- Header -->
 
+        <header class="header">
+
+            <button
+                class="menu-button"
+                onclick="toggleSidebar()"
+            >
+                ☰
+            </button>
+
+            <div class="header-title">
+                Nova AI
+            </div>
+
+        </header>
+
+
+
+        <!-- Messages -->
 
         <div id="chat-box">
 
-
             <div class="welcome">
 
-
                 <div class="nova-logo">
-                    
+                    🤖
                 </div>
-
 
                 <h1>
                     Hi, I'm Nova
                 </h1>
 
-
                 <p>
-                    Your personal AI chatbot assistant
+                    Your personal AI assistant
                 </p>
-
 
 
                 <div class="suggestions">
 
-
-                    <button onclick="suggest('Help me with homework')">
+                    <button
+                        onclick="suggest('Help me with homework')"
+                    >
                         📚 Homework
                     </button>
 
-
-                    <button onclick="suggest('Help me code')">
+                    <button
+                        onclick="suggest('Help me code')"
+                    >
                         💻 Coding
                     </button>
 
-
-                    <button onclick="suggest('Give me ideas')">
+                    <button
+                        onclick="suggest('Give me ideas')"
+                    >
                         💡 Ideas
                     </button>
 
-
-                    <button onclick="suggest('Ask me a question')">
+                    <button
+                        onclick="suggest('Ask me a question')"
+                    >
                         ❓ Questions
                     </button>
 
-
                 </div>
-
 
             </div>
 
-
         </div>
 
 
 
-
-
+        <!-- Input -->
 
         <div class="input-area">
 
+            <input
 
-            <input 
                 id="user-input"
+
+                type="text"
+
+                autocomplete="off"
+
                 placeholder="Message Nova..."
+
             >
 
+            <button
 
-            <button class="send-button" onclick="sendMessage()">
+                class="send-button"
 
-                ➤
+                onclick="sendMessage()"
+
+            >
+
+                ➜
 
             </button>
 
-
         </div>
 
-
-
-    </div>
-
+    </main>
 
 </div>
 
-
-
-
 <script src="script.js"></script>
-
 
 </body>
 
