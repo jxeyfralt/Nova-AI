@@ -248,6 +248,7 @@ body {
 
 
 .message {
+    display: inline-block;
 
     max-width:75%;
 
@@ -256,10 +257,13 @@ body {
     margin:10px 0;
 
     border-radius:15px;
-
-    white-space:pre-wrap;
-
+    line-height: 1.5;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    height: fit-content;
 }
+
+
 
 
 
@@ -268,6 +272,7 @@ body {
     background:#e9e9e9;
 
     margin-left:auto;
+    align-self: flex-end;
 
 }
 
@@ -278,6 +283,7 @@ body {
     background:white;
 
     border:1px solid #ddd;
+    align-self: flex-start;
 
 }
 
