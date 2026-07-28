@@ -120,6 +120,7 @@ def chat():
 
                         text = chunk.choices[0].delta.content
 
+                        print(repr(text), flush=True)
                         yield text
 
                 except Exception as e:
@@ -133,7 +134,7 @@ def chat():
             mimetype="text/plain",
             headers={
                 "Cache-Control": "no-cache",
-                "X-Accel-Buffering": "no"
+                "X-Accel-Buffering": "no",
                 "Connection": "keep-alive"
             }   
     )
