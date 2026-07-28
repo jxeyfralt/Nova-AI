@@ -187,22 +187,23 @@ async function sendMessage() {
 
 
         while (true) {
-
             const { done, value } = await reader.read();
-
             if (done) break;
+            const chunk = decoder.decode(value, {
+                stream: true
+            });
 
+            let i = 0;
 
-        const chunk = decoder.decode(value, {
-            stream: true
-        });
+            while (i < chunk.length) {
+                botMessage.text += chunk.slice(i, i + 8);
+                botDiv.textContent = botMessage.text;
 
-        for (const char of chunk) {
-            botMessage.text += char;
-            botDiv.textContent = botMessage.text;
+                i += 3;
 
-            await new Promise(resolve => setTimeout(resolve, 15));
-    }
+                await new Promise(resolve => setTimeout(resolve, 2));
+            }
+    
 
 
             box.scrollTop = box.scrollHeight;
@@ -244,5 +245,14 @@ function suggest(text) {
     document.getElementById("user-input").value = text;
 }
 
+function toggleSidebar() {
+
+    const sidebar = document.querySelector(".sidebar");
+    const overlay = document.querySelector(".overlay");
+
+    sidebar.classList.toggle("open");
+    overlay.classList.toggle("show");
+
+}
 
 renderChats();

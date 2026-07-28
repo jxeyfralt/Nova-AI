@@ -1,40 +1,69 @@
+/* ==============================
+   NOVA AI MAIN STYLE
+   ============================== */
+
+
 body {
+
     margin:0;
+
     height:100vh;
+
     font-family:Arial, sans-serif;
+
     background:white;
+
+    overflow:hidden;
+
 }
+
 
 
 .app {
+
     display:flex;
+
     height:100vh;
+
+    width:100%;
+
 }
 
 
-/* SIDEBAR */
+
+/* ==============================
+   SIDEBAR
+   ============================== */
+
 
 .sidebar {
 
     width:260px;
+
     background:#f7f7f8;
+
     border-right:1px solid #ddd;
 
     padding:15px;
 
     display:flex;
+
     flex-direction:column;
+
 }
+
 
 
 .new-chat {
 
     width:100%;
+
     padding:12px;
 
     border-radius:10px;
 
     background:#111;
+
     color:white;
 
     border:none;
@@ -44,6 +73,7 @@ body {
     font-size:16px;
 
 }
+
 
 
 .new-chat:hover {
@@ -90,19 +120,9 @@ body {
 
 
 
-.chat-item.active {
-
-    background:#dcdcdc;
-
-}
-
-
-
 .chat-title {
 
     flex:1;
-
-    cursor:pointer;
 
 }
 
@@ -118,14 +138,6 @@ body {
 
     cursor:pointer;
 
-    width:25px;
-
-    height:25px;
-
-    margin:0;
-
-    padding:0;
-
 }
 
 
@@ -138,9 +150,10 @@ body {
 
 
 
+/* ==============================
+   PROFILE
+   ============================== */
 
-
-/* PROFILE */
 
 .profile {
 
@@ -165,6 +178,7 @@ body {
 }
 
 
+
 .profile p {
 
     margin:3px 0;
@@ -177,8 +191,9 @@ body {
 
 
 
-
-/* CHAT AREA */
+/* ==============================
+   CHAT AREA
+   ============================== */
 
 
 .chat-area {
@@ -207,6 +222,14 @@ body {
 
 
 
+.menu-button {
+
+    display:none;
+
+}
+
+
+
 #chat-box {
 
     flex:1;
@@ -219,6 +242,11 @@ body {
 
 
 
+/* ==============================
+   MESSAGES
+   ============================== */
+
+
 .message {
 
     max-width:75%;
@@ -228,6 +256,8 @@ body {
     margin:10px 0;
 
     border-radius:15px;
+
+    white-space:pre-wrap;
 
 }
 
@@ -253,7 +283,9 @@ body {
 
 
 
-/* INPUT */
+/* ==============================
+   INPUT
+   ============================== */
 
 
 .input-area {
@@ -277,6 +309,8 @@ input {
     border-radius:25px;
 
     border:1px solid #ccc;
+
+    font-size:16px;
 
 }
 
@@ -302,9 +336,9 @@ input {
 
 }
 
-
-
-/* DOTS */
+/* ==============================
+   TYPING DOTS
+   ============================== */
 
 
 .typing {
@@ -314,6 +348,7 @@ input {
     gap:5px;
 
 }
+
 
 
 .dot {
@@ -331,6 +366,7 @@ input {
 }
 
 
+
 .dot:nth-child(2){
 
     animation-delay:.2s;
@@ -338,11 +374,13 @@ input {
 }
 
 
+
 .dot:nth-child(3){
 
     animation-delay:.4s;
 
 }
+
 
 
 @keyframes bounce {
@@ -354,7 +392,12 @@ input {
     }
 
 }
-/* Welcome Page */
+
+
+
+/* ==============================
+   WELCOME PAGE
+   ============================== */
 
 
 .welcome {
@@ -417,11 +460,6 @@ input {
 
 .suggestions button {
 
-
-    width:auto;
-
-    height:auto;
-
     padding:12px 18px;
 
     border-radius:20px;
@@ -436,7 +474,6 @@ input {
 
     font-size:15px;
 
-
 }
 
 
@@ -445,44 +482,153 @@ input {
 
     background:#eee;
 
-    transform:none;
+}
+
+
+
+/* ==============================
+   MOBILE SIDEBAR
+   ============================== */
+
+
+.overlay {
+
+    display:none;
 
 }
-/* Mobile Responsive Design */
-/* MOBILE RESPONSIVE DESIGN */
 
-@media (max-width: 600px) {
+
+
+/* ==============================
+   PHONE DESIGN
+   ============================== */
+
+
+@media (max-width:600px) {
 
 
     body {
-        height: 100vh;
+
         overflow:hidden;
+
     }
+
 
 
     .app {
-        height:100vh;
+
         width:100%;
+
+        height:100vh;
+
     }
 
 
-    /* Hide sidebar on phones */
+
+    /* Sidebar starts hidden */
+
     .sidebar {
-        display:none;
+
+        position:fixed;
+
+        top:0;
+
+        left:0;
+
+        height:100vh;
+
+        width:260px;
+
+        z-index:1000;
+
+        transform:translateX(-100%);
+
+        transition:transform .3s ease;
+
     }
+
+
+
+    /* Sidebar opens */
+
+    .sidebar.open {
+
+        transform:translateX(0);
+
+    }
+
+
+
+    /* Background overlay */
+
+    .overlay {
+
+        position:fixed;
+
+        inset:0;
+
+        background:rgba(0,0,0,.35);
+
+        z-index:999;
+
+    }
+
+
+
+    .overlay.show {
+
+        display:block;
+
+    }
+
 
 
     .chat-area {
+
         width:100%;
-        height:100vh;
+
     }
 
+
+
+    /* Header */
 
     .header {
+
+        display:flex;
+
+        align-items:center;
+
+        justify-content:center;
+
+        gap:10px;
+
         padding:15px;
+
         font-size:20px;
-        text-align:center;
+
     }
+
+
+
+    .menu-button {
+
+        display:block;
+
+        position:absolute;
+
+        left:15px;
+
+        background:none;
+
+        border:none;
+
+        font-size:26px;
+
+        cursor:pointer;
+
+    }
+
 
 
     #chat-box {
@@ -492,11 +638,13 @@ input {
     }
 
 
+
     .welcome {
 
         margin-top:80px;
 
     }
+
 
 
     .welcome h1 {
@@ -506,6 +654,7 @@ input {
     }
 
 
+
     .welcome p {
 
         font-size:16px;
@@ -513,11 +662,13 @@ input {
     }
 
 
+
     .nova-logo {
 
         font-size:55px;
 
     }
+
 
 
     .suggestions {
@@ -529,6 +680,7 @@ input {
     }
 
 
+
     .suggestions button {
 
         font-size:14px;
@@ -536,6 +688,7 @@ input {
         padding:10px 14px;
 
     }
+
 
 
     .message {
@@ -547,6 +700,7 @@ input {
     }
 
 
+
     .input-area {
 
         padding:10px;
@@ -554,13 +708,13 @@ input {
     }
 
 
+
     input {
 
         padding:12px;
 
-        font-size:16px;
-
     }
+
 
 
     .send-button {
@@ -571,4 +725,11 @@ input {
 
     }
 
+}
+.menu-button {
+    display: block !important;
+    color: black;
+    background: white;
+    border: none;
+    font-size: 30px;
 }
