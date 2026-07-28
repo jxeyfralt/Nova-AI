@@ -193,16 +193,16 @@ async function sendMessage() {
             if (done) break;
 
 
-            const chunk = decoder.decode(value, {
-                stream: true
-            });
+        const chunk = decoder.decode(value, {
+            stream: true
+        });
 
-
-            botMessage.text += chunk;
-
-
-            // ONLY update this message
+        for (const char of chunk) {
+            botMessage.text += char;
             botDiv.textContent = botMessage.text;
+
+            await new Promise(resolve => setTimeout(resolve, 15));
+    }
 
 
             box.scrollTop = box.scrollHeight;
