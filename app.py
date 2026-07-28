@@ -14,7 +14,7 @@ CORS(app)
 # Nova Configuration
 # ==============================
 
-MODEL = "qwen/qwen3-8b:free"
+MODEL = "openrouter/free"
 
 SYSTEM_PROMPT = """
 You are Nova, a friendly personal AI assistant.
@@ -91,6 +91,11 @@ def chat():
 
         data = request.get_json()
         user_message = data.get("message")
+
+        if not user_message:
+            return jsonify({
+                "reply": "Please enter a message."
+            })
         if any(word in user_message.lower() for word in [
             "who created you",
             "who made you",
@@ -101,10 +106,7 @@ def chat():
                 mimetype="text/plain"
             )
 
-        if not user_message:
-            return jsonify({
-                "reply": "Please enter a message."
-            })
+
 
         print("[INFO] User message received:", user_message)
 
