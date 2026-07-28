@@ -166,38 +166,22 @@ body{
    CHAT BUBBLES
    ============================== */
 
-/* ==============================
-   CHAT BUBBLES
-   ============================== */
-
 .message{
 
     line-height:1.7;
-
     white-space:pre-wrap;
-
     word-break:break-word;
 
 }
 
 
-/* User */
+/* USER MESSAGE */
 
 .message.user{
 
-    align-self:center;
-
-    width:100%;
+    align-self:flex-end;
 
     max-width:900px;
-
-    display:flex;
-
-    justify-content:flex-end;
-
-}
-
-.message.user{
 
     background:#ececec;
 
@@ -205,27 +189,25 @@ body{
 
     border-radius:18px;
 
-    width:fit-content;
-
-    margin-left:auto;
+    margin:10px 0;
 
 }
 
-.message.bot{
 
-    align-self:center;
+/* NOVA MESSAGE */
 
-    width:100%;
+.message.bot,
+.message.assistant{
+
+    align-self:flex-start;
 
     max-width:900px;
 
-    margin:20px 0;
+    padding:14px 18px;
 
-    padding:0;
+    margin:10px 0;
 
     background:none;
-
-    border:none;
 
 }
 
