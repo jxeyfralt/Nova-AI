@@ -84,11 +84,10 @@ function displayChat() {
     }
 
     chats[currentChat].messages.forEach(msg => {
-        box.innerHTML += `
-            <div class="message ${msg.role}">
-                ${msg.text}
-            </div>
-        `;
+        const div = document.createElement("div");
+        div.className = `message ${msg.role}`;
+        div.textContent = msg.text;
+        box.appendChild(div);
     });
 
     box.scrollTop = box.scrollHeight;
@@ -125,7 +124,9 @@ async function sendMessage() {
     renderChats();
     displayChat();
 
+
     const box = document.getElementById("chat-box");
+
 
     const typing = document.createElement("div");
     typing.className = "message bot";
@@ -142,6 +143,7 @@ async function sendMessage() {
     box.appendChild(typing);
     box.scrollTop = box.scrollHeight;
 
+
     try {
 
         const response = await fetch(
@@ -157,21 +159,32 @@ async function sendMessage() {
             }
         );
 
+
         if (!response.ok) {
             throw new Error("Request failed");
         }
 
+
         const reader = response.body.getReader();
         const decoder = new TextDecoder();
 
+
         typing.remove();
 
-        let botMessage = {
+
+        const botDiv = document.createElement("div");
+        botDiv.className = "message bot";
+
+        box.appendChild(botDiv);
+
+
+        const botMessage = {
             role: "bot",
             text: ""
         };
 
         chats[currentChat].messages.push(botMessage);
+
 
         while (true) {
 
@@ -179,14 +192,26 @@ async function sendMessage() {
 
             if (done) break;
 
-            botMessage.text += decoder.decode(value, { stream: true });
 
-            displayChat();
+            const chunk = decoder.decode(value, {
+                stream: true
+            });
+
+
+            botMessage.text += chunk;
+
+
+            // ONLY update this message
+            botDiv.textContent = botMessage.text;
+
+
+            box.scrollTop = box.scrollHeight;
         }
+
 
         saveChats();
         renderChats();
-        displayChat();
+
 
     } catch (error) {
 
@@ -205,16 +230,19 @@ async function sendMessage() {
     }
 }
 
+
 document
     .getElementById("user-input")
-    .addEventListener("keydown", function (event) {
+    .addEventListener("keydown", function(event) {
         if (event.key === "Enter") {
             sendMessage();
         }
     });
 
+
 function suggest(text) {
     document.getElementById("user-input").value = text;
 }
+
 
 renderChats();
