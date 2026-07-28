@@ -14,7 +14,7 @@ CORS(app)
 # Nova Configuration
 # ==============================
 
-MODEL = "meta-llama/llama-3.1-8b-instruct:free"
+MODEL = "meta-llama/llama-3.1-8b-instruct"
 
 SYSTEM_PROMPT = """
 You are Nova, a friendly personal AI assistant.
