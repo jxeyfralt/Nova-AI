@@ -166,17 +166,17 @@ body{
    CHAT BUBBLES
    ============================== */
 
-.message{
+/* ==============================
+   CHAT BUBBLES
+   ============================== */
 
-    max-width:900px;
+.message{
 
     line-height:1.7;
 
-    word-wrap:break-word;
-
     white-space:pre-wrap;
 
-    margin:12px auto;
+    word-break:break-word;
 
 }
 
@@ -189,13 +189,15 @@ body{
 
     max-width:70%;
 
-    background:#ececec;
-
-    color:#111;
-
     padding:14px 18px;
 
+    margin:12px 0;
+
+    background:#ececec;
+
     border-radius:18px;
+
+    color:#111;
 
 }
 
@@ -204,17 +206,17 @@ body{
 
 .message.bot{
 
-    align-self:stretch;
-
-    max-width:900px;
+    align-self:flex-start;
 
     width:100%;
 
-    padding:0;
+    max-width:900px;
 
     margin:20px auto;
 
-    background:transparent;
+    padding:0;
+
+    background:none;
 
     border:none;
 
