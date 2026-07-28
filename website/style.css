@@ -267,23 +267,49 @@ body {
 
 
 
-.user {
+/* =========================================
+   CHAT BUBBLES
+   ========================================= */
 
-    background:#e9e9e9;
+.message{
 
-    margin-left:auto;
-    
+    width:fit-content;
+
+    max-width:75%;
+
+    padding:14px 18px;
+
+    border-radius:18px;
+
+    line-height:1.55;
+
+    white-space:pre-wrap;
+
+    word-break:break-word;
 
 }
 
 
+.message.user{
 
-.bot {
+    align-self:flex-end;
+
+    background:#ececec;
+
+    color:#111;
+
+}
+
+
+.message.bot{
+
+    align-self:flex-start;
 
     background:white;
 
-    border:1px solid #ddd;
-    align-self: flex-start;
+    border:1px solid #dddddd;
+
+    color:#111;
 
 }
 
