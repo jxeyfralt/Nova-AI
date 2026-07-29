@@ -194,17 +194,21 @@ async function sendMessage() {
             });
 
             fullResponse += chunk;
+
             botMessage.text = fullResponse;
 
             botDiv.textContent = botMessage.text;
 
             box.scrollTop = box.scrollHeight;
+        }
+
 
         // Convert streamed text into Markdown once finished
         botDiv.innerHTML = marked.parse(botMessage.text);
 
         saveChats();
         renderChats();
+
 
     } catch (error) {
 
