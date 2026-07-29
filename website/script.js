@@ -354,7 +354,7 @@ async function sendMessage(){
 
                 box.scrollTop = box.scrollHeight;
 
-                await new Promise(resolve => setTimeout(resolve, 10));
+                await new Promise(resolve => setTimeout(resolve, 1));
 
             }
 
