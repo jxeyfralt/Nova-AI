@@ -209,6 +209,7 @@ async function sendMessage() {
         saveChats();
         renderChats();
 
+    }
 
     } catch (error) {
 
