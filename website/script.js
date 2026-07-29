@@ -162,7 +162,7 @@ async function sendMessage() {
         const reader = response.body.getReader();
         const decoder = new TextDecoder();
 
-        typing.remove();
+        let firstChunk = true;
 
         const botDiv = document.createElement("div");
         botDiv.className = "message bot";
@@ -184,23 +184,21 @@ async function sendMessage() {
 
             if (done) break;
 
+            if (firstChunk) {
+                typing.remove();
+                firstChunk = false;
+            }
+
             const chunk = decoder.decode(value, {
                 stream: true
             });
 
             fullResponse += chunk;
+            botMessage.text = fullResponse;
 
-            while (botMessage.text.length < fullResponse.length) {
+            botDiv.textContent = botMessage.text;
 
-                botMessage.text += fullResponse[botMessage.text.length];
-
-                botDiv.textContent = botMessage.text;
-
-                box.scrollTop = box.scrollHeight;
-
-                await new Promise(resolve => setTimeout(resolve, 15));
-            }
-        }
+            box.scrollTop = box.scrollHeight;
 
         // Convert streamed text into Markdown once finished
         botDiv.innerHTML = marked.parse(botMessage.text);
