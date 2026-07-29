@@ -111,6 +111,8 @@ def chat():
         print("[INFO] User message received:", user_message)
         start = time.time()
 
+
+        start = time.time()
         response = client.chat.completions.create(
 
             model=MODEL,
@@ -133,7 +135,9 @@ def chat():
         def generate():
 
             print("[INFO] Streaming started")
-            first_chunk = True
+
+            first = True
+
             for chunk in response:
 
                 try:
@@ -144,12 +148,14 @@ def chat():
                         and chunk.choices[0].delta.content
                     ):
 
+                        if first:
+                            print(f"[TIMING] First token: {time.time() - start:.2f}s")
+                            first = False
+
                         text = chunk.choices[0].delta.content
-                        
-                        if first_chunk:
-                            print(f"[TIMING] First token after {time.time() - start:.2f}s")
-                            first_chunk = False
+
                         print(repr(text), flush=True)
+
                         yield text
 
                 except Exception as e:
