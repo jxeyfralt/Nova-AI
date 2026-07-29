@@ -1,3 +1,5 @@
+
+alert("THIS IS THE SCRIPT I'M EDITING");
 let chats = JSON.parse(localStorage.getItem("chats")) || [];
 let currentChat = null;
 
@@ -18,9 +20,7 @@ function renderChats() {
             <button class="delete">✕</button>
         `;
 
-        item.querySelector(".chat-title").onclick = () => {
-            openChat(index);
-        };
+        item.querySelector(".chat-title").onclick = () => openChat(index);
 
         item.querySelector(".delete").onclick = (e) => {
             e.stopPropagation();
@@ -124,34 +124,22 @@ async function sendMessage() {
     renderChats();
     displayChat();
 
-
     const box = document.getElementById("chat-box");
-
 
     const typing = document.createElement("div");
     typing.className = "message bot";
     typing.id = "typing";
 
     typing.innerHTML = `
-        <div class="thinking-status">
-            <div id="status-1">● Thinking...</div>
+        <div class="typing">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
         </div>
     `;
 
     box.appendChild(typing);
-
-    const status = typing.querySelector(".thinking-status");
-
-    const timer1 = setTimeout(() => {
-        status.innerHTML += `<div id="status-2">● Analyzing your question...</div>`;
-    }, 2000);
-
-    const timer2 = setTimeout(() => {
-        status.innerHTML += `<div id="status-3">● Writing response...</div>`;
-    }, 4000);
-
     box.scrollTop = box.scrollHeight;
-
 
     try {
 
@@ -168,29 +156,20 @@ async function sendMessage() {
             }
         );
 
-
         if (!response.ok) {
             const errorText = await response.text();
-
             throw new Error(errorText);
-
         }
-
 
         const reader = response.body.getReader();
         const decoder = new TextDecoder();
 
-        clearTimeout(timer1);
-        clearTimeout(timer2);
-
         typing.remove();
-
 
         const botDiv = document.createElement("div");
         botDiv.className = "message bot";
 
         box.appendChild(botDiv);
-
 
         const botMessage = {
             role: "bot",
@@ -198,7 +177,6 @@ async function sendMessage() {
         };
 
         chats[currentChat].messages.push(botMessage);
-
 
         let fullResponse = "";
 
@@ -226,10 +204,11 @@ async function sendMessage() {
             }
         }
 
+        // Convert streamed text into Markdown once finished
+        botDiv.innerHTML = marked.parse(botMessage.text);
 
         saveChats();
         renderChats();
-
 
     } catch (error) {
 
@@ -248,7 +227,6 @@ async function sendMessage() {
     }
 }
 
-
 document
     .getElementById("user-input")
     .addEventListener("keydown", function(event) {
@@ -256,7 +234,6 @@ document
             sendMessage();
         }
     });
-
 
 function suggest(text) {
     document.getElementById("user-input").value = text;
@@ -273,4 +250,3 @@ function toggleSidebar() {
 }
 
 renderChats();
-
