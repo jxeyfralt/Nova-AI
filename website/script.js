@@ -140,7 +140,7 @@ async function sendMessage() {
     box.scrollTop = box.scrollHeight;
 
     try {
-
+        console.log("FETCH START:", performance.now());
         const response = await fetch(
             "https://nova-ai-o27u.onrender.com/chat",
             {
@@ -160,6 +160,7 @@ async function sendMessage() {
         }
 
         const reader = response.body.getReader();
+        console.log("READER READY:", performance.now());
         const decoder = new TextDecoder();
 
         let firstChunk = true;
@@ -185,6 +186,7 @@ async function sendMessage() {
             if (done) break;
 
             if (firstChunk) {
+                console.log("FIRST TEXT DISPLAY:", performance.now());
                 typing.remove();
                 firstChunk = false;
             }
