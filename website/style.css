@@ -396,3 +396,55 @@ body{
         height:45px;
     }
 }
+
+/* ==============================
+   MARKDOWN RESPONSE STYLING
+   ============================== */
+
+.message ul,
+.message ol{
+    margin:10px 0 10px 25px;
+}
+
+.message li{
+    margin:5px 0;
+}
+
+.message strong{
+    font-weight:bold;
+}
+
+.message code{
+    background:#eee;
+    padding:3px 6px;
+    border-radius:5px;
+}
+
+/* ==============================
+   NOVA THINKING STATUS
+   ============================== */
+
+.thinking-status{
+    color:#666;
+    font-size:15px;
+    line-height:1.8;
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+    animation:fadeIn .3s ease;
+}
+
+.thinking-status div{
+    animation:fadeIn .25s ease;
+}
+
+@keyframes fadeIn{
+    from{
+        opacity:0;
+        transform:translateY(4px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}

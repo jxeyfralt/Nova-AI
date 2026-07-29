@@ -86,7 +86,7 @@ function displayChat() {
     chats[currentChat].messages.forEach(msg => {
         const div = document.createElement("div");
         div.className = `message ${msg.role}`;
-        div.textContent = msg.text;
+        div.innerHTML = marked.parse(msg.text);
         box.appendChild(div);
     });
 
@@ -133,14 +133,23 @@ async function sendMessage() {
     typing.id = "typing";
 
     typing.innerHTML = `
-        <div class="typing">
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
+        <div class="thinking-status">
+            <div id="status-1">● Thinking...</div>
         </div>
     `;
 
     box.appendChild(typing);
+
+    const status = typing.querySelector(".thinking-status");
+
+    const timer1 = setTimeout(() => {
+        status.innerHTML += `<div id="status-2">● Analyzing your question...</div>`;
+    }, 2000);
+
+    const timer2 = setTimeout(() => {
+        status.innerHTML += `<div id="status-3">● Writing response...</div>`;
+    }, 4000);
+
     box.scrollTop = box.scrollHeight;
 
 
@@ -171,6 +180,8 @@ async function sendMessage() {
         const reader = response.body.getReader();
         const decoder = new TextDecoder();
 
+        clearTimeout(timer1);
+        clearTimeout(timer2);
 
         typing.remove();
 
@@ -262,3 +273,4 @@ function toggleSidebar() {
 }
 
 renderChats();
+
