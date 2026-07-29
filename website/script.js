@@ -1,5 +1,3 @@
-
-alert("THIS IS THE SCRIPT I'M EDITING");
 let chats = JSON.parse(localStorage.getItem("chats")) || [];
 let currentChat = null;
 
