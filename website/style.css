@@ -420,6 +420,26 @@ body{
     border-radius:5px;
 }
 
+
+.message p{
+    margin:0;
+}
+
+.message pre{
+    margin:12px 0;
+}
+
+.message h1,
+.message h2,
+.message h3{
+    margin:12px 0 8px;
+}
+
+.message blockquote{
+    margin:12px 0;
+}
+
+
 /* ==============================
    NOVA THINKING STATUS
    ============================== */
@@ -447,4 +467,12 @@ body{
         opacity:1;
         transform:translateY(0);
     }
+}
+
+.message p:first-child{
+    margin-top:0;
+}
+
+.message p:last-child{
+    margin-bottom:0;
 }
