@@ -14,7 +14,7 @@ CORS(app)
 # Nova Configuration
 # ==============================
 
-MODEL = "google/gemma-4-26b-a4b-it:free"
+MODEL = "qwen/qwen3-14b:free"
 
 SYSTEM_PROMPT = """
 You are Nova, a friendly personal AI assistant.
