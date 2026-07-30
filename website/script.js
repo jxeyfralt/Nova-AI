@@ -319,31 +319,23 @@ async function sendMessage(){
 
         while(true){
 
-
             const {done,value} = await reader.read();
-
-
 
             if(done) break;
 
 
-
             const chunk = decoder.decode(value,{
-
                 stream:true
-
             });
-
 
 
             if(firstChunk){
 
                 typing.remove();
 
-                firstChunk=false;
+                firstChunk = false;
 
             }
-
 
 
             botMessage.text += chunk;
@@ -352,15 +344,15 @@ async function sendMessage(){
 
             box.scrollTop = box.scrollHeight;
 
+        }
+
+
+        // After streaming finishes
         botDiv.innerHTML = marked.parse(botMessage.text);
 
         saveChats();
 
         renderChats();
-
-
-
-    }
 
 
 
@@ -380,7 +372,7 @@ async function sendMessage(){
         });
 
 
-        botDiv.innerHTML = marked.parse(botMessage.text);
+            
         saveChats();
 
         renderChats();
