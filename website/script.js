@@ -346,22 +346,13 @@ async function sendMessage(){
 
 
 
-            for (const char of chunk) {
+            botMessage.text += chunk;
 
-                botMessage.text += char;
+            botDiv.textContent = botMessage.text;
 
-                botDiv.innerHTML = marked.parse(botMessage.text);
+            box.scrollTop = box.scrollHeight;
 
-                box.scrollTop = box.scrollHeight;
-
-                await new Promise(resolve => setTimeout(resolve, 1));
-
-            }
-
-
-        }
-
-
+        botDiv.innerHTML = marked.parse(botMessage.text);
 
         saveChats();
 
@@ -389,7 +380,7 @@ async function sendMessage(){
         });
 
 
-
+        botDiv.innerHTML = marked.parse(botMessage.text);
         saveChats();
 
         renderChats();
