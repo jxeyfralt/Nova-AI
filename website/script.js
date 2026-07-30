@@ -142,7 +142,11 @@ function displayChat(){
 
         div.className = `message ${msg.role}`;
 
-        div.innerHTML = marked.parse(msg.text);
+        if (msg.role === "user") {
+            div.textContent = msg.text;
+        } else {
+            div.innerHTML = marked.parse(msg.text);
+        }
 
         box.appendChild(div);
 
