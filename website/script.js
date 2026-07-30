@@ -338,11 +338,17 @@ async function sendMessage(){
             }
 
 
-            botMessage.text += chunk;
+            for (const char of chunk) {
 
-            botDiv.textContent = botMessage.text;
+                botMessage.text += char;
 
-            box.scrollTop = box.scrollHeight;
+                botDiv.textContent = botMessage.text;
+
+                box.scrollTop = box.scrollHeight;
+
+                await new Promise(resolve => setTimeout(resolve, 5));
+
+            }
 
         }
 
