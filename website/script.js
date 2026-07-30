@@ -356,7 +356,7 @@ async function sendMessage(){
 
 
 
-    catch(error){
+    }catch(error){
 
 
         typing.remove();
