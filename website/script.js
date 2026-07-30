@@ -257,7 +257,7 @@ async function sendMessage(){
 
 
         const response = await fetch(
-
+        console.log("Response received:", performance.now());
             "https://nova-ai-o27u.onrender.com/chat",
 
             {
@@ -324,7 +324,7 @@ async function sendMessage(){
         while(true){
 
             const {done,value} = await reader.read();
-
+            console.log("Chunk received:", performance.now());
             if(done) break;
 
 
