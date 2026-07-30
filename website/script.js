@@ -255,9 +255,8 @@ async function sendMessage(){
 
     try{
 
-
         const response = await fetch(
-        console.log("Response received:", performance.now());
+
             "https://nova-ai-o27u.onrender.com/chat",
 
             {
@@ -265,22 +264,18 @@ async function sendMessage(){
                 method:"POST",
 
                 headers:{
-
                     "Content-Type":"application/json"
-
                 },
 
                 body:JSON.stringify({
-
                     message:message
-
                 })
 
             }
 
         );
 
-
+        console.log("Response received:", performance.now());
 
         if(!response.ok){
 
@@ -288,25 +283,17 @@ async function sendMessage(){
 
         }
 
-
-
         const reader = response.body.getReader();
 
         const decoder = new TextDecoder();
 
-
-
         let firstChunk = true;
-
-
 
         const botDiv = document.createElement("div");
 
         botDiv.className = "message bot";
 
         box.appendChild(botDiv);
-
-
 
         const botMessage = {
 
@@ -316,22 +303,19 @@ async function sendMessage(){
 
         };
 
-
         chats[currentChat].messages.push(botMessage);
-
-
 
         while(true){
 
             const {done,value} = await reader.read();
-            console.log("Chunk received:", performance.now());
-            if(done) break;
 
+            console.log("Chunk received:", performance.now());
+
+            if(done) break;
 
             const chunk = decoder.decode(value,{
                 stream:true
             });
-
 
             if(firstChunk){
 
@@ -341,32 +325,25 @@ async function sendMessage(){
 
             }
 
+            botMessage.text += chunk;
 
-            for (const char of chunk) {
+            botDiv.textContent = botMessage.text;
 
-                botMessage.text += char;
-
-                botDiv.textContent = botMessage.text;
-
-                box.scrollTop = box.scrollHeight;
-
-                await new Promise(resolve => setTimeout(resolve, 5));
-
-            }
+            box.scrollTop = box.scrollHeight;
 
         }
 
-
-        // After streaming finishes
         botDiv.innerHTML = marked.parse(botMessage.text);
 
         saveChats();
 
         renderChats();
 
+    }
 
 
-    }catch(error){
+
+    catch(error){
 
 
         typing.remove();
