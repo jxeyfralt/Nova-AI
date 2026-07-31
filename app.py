@@ -4,6 +4,7 @@ from openai import OpenAI
 import os
 import traceback
 import time
+import json
 
 app = Flask(__name__)
 
@@ -18,7 +19,6 @@ MODEL = "google/gemma-4-26b-a4b-it:free"
 
 SYSTEM_PROMPT = """
 You are Nova, a friendly personal AI assistant.
-
 
 IDENTITY:
 - Your name is Nova.
@@ -52,7 +52,30 @@ Rules:
 - Use examples when helpful.
 - Keep answers easy to understand.
 """
+# ==============================
+# Nova Memory
+# ==============================
 
+MEMORY_FILE = "memory.json"
+
+
+def load_memory():
+
+    try:
+        with open(MEMORY_FILE, "r") as file:
+            return json.load(file)
+
+    except:
+        return {
+            "name": "",
+            "facts": []
+        }
+
+
+def save_memory(memory):
+
+    with open(MEMORY_FILE, "w") as file:
+        json.dump(memory, file, indent=4)
 
 # ==============================
 # OpenRouter Client
@@ -65,9 +88,12 @@ if API_KEY:
 
     client = OpenAI(
         api_key=API_KEY,
-        base_url="https://openrouter.ai/api/v1"
+        base_url="https://openrouter.ai/api/v1",
+        default_headers={
+            "HTTP-Referer": "https://chatnovaai.vercel.app",
+            "X-Title": "Nova AI"
+        }
     )
-
 else:
 
     client = None
@@ -107,12 +133,26 @@ def chat():
             )
 
 
-
         print("[INFO] User message received:", user_message)
+
         start = time.time()
 
 
-        start = time.time()
+        memory = load_memory()
+
+        memory_text = f"""
+
+        User memory:
+
+        Name:
+        {memory.get("name", "")}
+
+        Facts:
+        {", ".join(memory.get("facts", []))}
+
+        """
+
+
         response = client.chat.completions.create(
 
             model=MODEL,
@@ -120,7 +160,7 @@ def chat():
             messages=[
                 {
                     "role": "system",
-                    "content": SYSTEM_PROMPT
+                    "content": SYSTEM_PROMPT + memory_text
                 },
                 {
                     "role": "user",
@@ -156,7 +196,7 @@ def chat():
 
                         print(repr(text), flush=True)
 
-                        yield text
+                        yield text.encode("utf-8")
 
                 except Exception as e:
 
@@ -166,14 +206,13 @@ def chat():
 
         return Response(
             stream_with_context(generate()),
-            mimetype="text/plain",
+            mimetype="text/plain; charset=utf-8",
+            direct_passthrough=True,
             headers={
-                "Cache-Control": "no-cache",
-                "X-Accel-Buffering": "no",
-                "Connection": "keep-alive"
-            }   
+                "Cache-Control": "no-cache, no-transform",
+                "X-Accel-Buffering": "no"
+            }
         )
-
     except Exception as e:
 
         print("[ERROR] Chat failed",e)
