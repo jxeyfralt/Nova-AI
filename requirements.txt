@@ -2,3 +2,6 @@ flask
 flask-cors
 openai
 gunicorn
+flask-socketio
+gevent
+gevent-websocket

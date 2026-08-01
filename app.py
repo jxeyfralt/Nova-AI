@@ -196,7 +196,7 @@ def chat():
 
                         print(repr(text), flush=True)
 
-                        yield text.encode("utf-8")
+                        yield text
 
                 except Exception as e:
 
