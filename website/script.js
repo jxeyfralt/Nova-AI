@@ -274,6 +274,7 @@ async function sendMessage(){
             }
 
         );
+        console.log("Response body:", response.body);
 
         console.log("Response received:", performance.now());
 
@@ -304,25 +305,23 @@ async function sendMessage(){
         };
 
         chats[currentChat].messages.push(botMessage);
+        while (true) {
 
-        while(true){
+            console.log("Waiting for chunk...");
 
-            const {done,value} = await reader.read();
+            const { done, value } = await reader.read();
 
-            console.log("Chunk received:", performance.now());
+            console.log("Got chunk:", done ? "END" : value.length);
 
-            if(done) break;
+            if (done) break;
 
-            const chunk = decoder.decode(value,{
-                stream:true
+            const chunk = decoder.decode(value, {
+                stream: true
             });
 
-            if(firstChunk){
-
+            if (firstChunk) {
                 typing.remove();
-
                 firstChunk = false;
-
             }
 
             botMessage.text += chunk;
