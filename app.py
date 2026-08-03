@@ -196,7 +196,7 @@ def chat():
 
                         print(repr(text), flush=True)
 
-                        yield text
+                        yield text.encode("utf-8")
 
                 except Exception as e:
 
@@ -206,10 +206,9 @@ def chat():
 
         return Response(
             stream_with_context(generate()),
-            mimetype="text/plain; charset=utf-8",
-            direct_passthrough=True,
+            mimetype="text/plain",
             headers={
-                "Cache-Control": "no-cache, no-transform",
+                "Cache-Control": "no-cache",
                 "X-Accel-Buffering": "no"
             }
         )
