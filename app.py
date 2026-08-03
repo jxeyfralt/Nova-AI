@@ -205,12 +205,13 @@ def chat():
             print("[INFO] Streaming finished")
 
         return Response(
-            stream_with_context(generate()),
-            mimetype="text/plain",
+            generate(),
+            content_type="text/plain; charset=utf-8",
             headers={
                 "Cache-Control": "no-cache",
-                "X-Accel-Buffering": "no"
-            }
+                "Transfer-Encoding": "chunked",
+                "X-Accel-Buffering": "no",
+            },
         )
     except Exception as e:
 
